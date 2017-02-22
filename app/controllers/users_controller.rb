@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
   def show
   	@user = User.find(params[:id])
-    redirect_to root_url and return unless current_user?(@user)
+    #redirect_to root_url and return unless current_user?(@user)
     @microposts = @user.microposts.paginate(page: params[:page])
   end
   
@@ -45,6 +45,19 @@ class UsersController < ApplicationController
     User.find(params[:id]).destroy
     flash[:success] = "User deleted"
     redirect_to users_url
+  end
+  def following
+    @title = "Following"
+    @user  = User.find(params[:id])
+    @users = @user.following.paginate(page: params[:page])
+    render 'show_follow'
+  end
+
+  def followers
+    @title = "Followers"
+    @user  = User.find(params[:id])
+    @users = @user.followers.paginate(page: params[:page])
+    render 'show_follow'
   end
 
   private
